@@ -35,3 +35,6 @@ build/
 .vscode/
 /.mvn/
 mvnw.cmd
+
+### jrebel ###
+rebel.xml
