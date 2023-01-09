@@ -2,7 +2,7 @@ package com.vipicu.maker.generator.config;
 
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import org.apache.ibatis.reflection.MetaObject;
-import org.springframework.stereotype.Component;
+import org.jetbrains.annotations.NotNull;
 
 import java.time.LocalDateTime;
 
@@ -12,8 +12,8 @@ import java.time.LocalDateTime;
  * @author oohmygosh
  * @since 2022/11/28
  */
-@Component
 public class MakerMetaObjectHandler implements MetaObjectHandler {
+
     /**
      * 插入填充
      *
@@ -32,7 +32,7 @@ public class MakerMetaObjectHandler implements MetaObjectHandler {
         this.fillHasGetter(metaObject, "updateTime", LocalDateTime.now(), true);
     }
 
-    protected void fillHasGetter(MetaObject metaObject, String fieldName, Object fieldVal, boolean isCover) {
+    protected void fillHasGetter(@NotNull MetaObject metaObject, String fieldName, Object fieldVal, boolean isCover) {
         if (metaObject.hasGetter(fieldName)) {
             if (isCover)
                 this.setFieldValByName(fieldName, fieldVal, metaObject);

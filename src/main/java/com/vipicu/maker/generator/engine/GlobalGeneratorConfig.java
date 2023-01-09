@@ -50,7 +50,7 @@ public class GlobalGeneratorConfig {
     }
 
     public static class Builder {
-        private final GlobalGeneratorConfig globalConfig;
+        private final GlobalGeneratorConfig generatorGlobalConfig;
         private final ISysGeneratorSuperclassService superclassService;
         private final ISysGeneratorFieldService fieldService;
         private final ISysGeneratorTemplateService templateService;
@@ -58,7 +58,7 @@ public class GlobalGeneratorConfig {
         private final ISysGeneratorStrategyService strategyService;
 
         public Builder() {
-            this.globalConfig = new GlobalGeneratorConfig();
+            this.generatorGlobalConfig = new GlobalGeneratorConfig();
             this.superclassService = SpringUtils.getBean(ISysGeneratorSuperclassService.class);
             this.fieldService = SpringUtils.getBean(ISysGeneratorFieldService.class);
             this.templateService = SpringUtils.getBean(ISysGeneratorTemplateService.class);
@@ -67,7 +67,7 @@ public class GlobalGeneratorConfig {
         }
 
         public Builder tables(List<SysGeneratorTable> tables) {
-            this.globalConfig.globalStrategy = strategyService.getOne(Wrappers.<SysGeneratorStrategy>lambdaQuery().eq(SysGeneratorStrategy::getPid, tables.get(0).getDbId()));
+            this.generatorGlobalConfig.globalStrategy = strategyService.getOne(Wrappers.<SysGeneratorStrategy>lambdaQuery().eq(SysGeneratorStrategy::getPid, tables.get(0).getDbId()));
             ArrayList<TableInfo> tableInfos = new ArrayList<>();
             tables.forEach(table -> {
                 table.setTableStrategy(tableStrategyService.getOne(Wrappers.<TableStrategy>lambdaQuery().eq(TableStrategy::getTableId, table.getId())));
@@ -101,8 +101,8 @@ public class GlobalGeneratorConfig {
                 }));
                 tableInfos.add(TableInfo.builder()
                         .comment(table.getComment())
-                        .tablePrefix(tableStrategy.getTablePrefix())
-                        .tableSuffix(tableStrategy.getTableSuffix())
+                        .tablePrefix(generatorGlobalConfig.globalStrategy.getTablePrefix())
+                        .tableSuffix(generatorGlobalConfig.globalStrategy.getTableSuffix())
                         .fieldPrefix(tableStrategy.getFieldPrefix())
                         .fieldSuffix(tableStrategy.getFieldSuffix())
                         .validation(tableStrategy.getValidation())
@@ -115,7 +115,7 @@ public class GlobalGeneratorConfig {
                         .mapper(tableStrategy.getMapper())
                         .restController(true)
                         .author(tableStrategy.getAuthor())
-                        .packagePath(StringUtils.isBlank(tableStrategy.getPackagePath()) ? globalConfig.getGlobalStrategy().getPackagePath() : tableStrategy.getPackagePath())
+                        .packagePath(StringUtils.isBlank(tableStrategy.getPackagePath()) ? generatorGlobalConfig.getGlobalStrategy().getPackagePath() : tableStrategy.getPackagePath())
                         .commonFields(commonField)
                         .templateMap(classTypeStringEnumMap)
                         // fields 构建
@@ -130,7 +130,7 @@ public class GlobalGeneratorConfig {
                         .importPackages(importPackages)
                         .build());
             });
-            this.globalConfig.tables = tableInfos;
+            this.generatorGlobalConfig.tables = tableInfos;
             return this;
         }
 
@@ -159,12 +159,12 @@ public class GlobalGeneratorConfig {
         }
 
         public void templateRender(ConsumerAfterRender consumerAfterRender) {
-            VelocityTemplate template = new VelocityTemplate(this.globalConfig);
+            VelocityTemplate template = new VelocityTemplate(this.generatorGlobalConfig);
             template.batchOutput(consumerAfterRender);
         }
 
         public GlobalGeneratorConfig build() {
-            return this.globalConfig;
+            return this.generatorGlobalConfig;
         }
     }
 }

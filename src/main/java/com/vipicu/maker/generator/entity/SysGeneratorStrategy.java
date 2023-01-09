@@ -2,6 +2,7 @@ package com.vipicu.maker.generator.entity;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler;
 import com.vipicu.maker.generator.core.bean.BaseEntity;
 import com.vipicu.maker.generator.core.validation.Create;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -11,6 +12,8 @@ import lombok.Setter;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PositiveOrZero;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * 代码生成策略
@@ -21,7 +24,7 @@ import javax.validation.constraints.PositiveOrZero;
 @Getter
 @Setter
 @Schema(name = "SysGeneratorStrategy", description = "代码生成策略")
-@TableName("sys_generator_strategy")
+@TableName(value = "sys_generator_strategy",autoResultMap = true)
 @NoArgsConstructor
 public class SysGeneratorStrategy extends BaseEntity {
 
@@ -35,6 +38,14 @@ public class SysGeneratorStrategy extends BaseEntity {
 
     @Schema(description = "作者")
     private String author = "oohmygosh";
+
+    @Schema(description = "表前缀")
+    @TableField(typeHandler = JacksonTypeHandler.class)
+    private Set<String> tablePrefix = new HashSet<>();
+
+    @Schema(description = "表后缀")
+    @TableField(typeHandler = JacksonTypeHandler.class)
+    private Set<String> tableSuffix = new HashSet<>();
 
     @TableField(exist = false)
     private Integer deleted;

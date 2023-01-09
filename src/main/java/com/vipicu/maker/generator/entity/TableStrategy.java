@@ -69,20 +69,12 @@ public class TableStrategy extends BaseEntity {
     @Schema(description = "命名策略")
     private NamingStrategy naming = NamingStrategy.underline_to_camel;
 
-    @TableField(exist = false)
-    @Schema(description = "表前缀")
-    private Set<String> tablePrefix = new HashSet<>();
-
-    @TableField(exist = false)
-    @Schema(description = "表后缀")
-    private Set<String> tableSuffix = new HashSet<>();
-
-    @TableField(exist = false)
     @Schema(description = "字段前缀")
+    @TableField(typeHandler = JacksonTypeHandler.class)
     private Set<String> fieldPrefix = new HashSet<>();
 
-    @TableField(exist = false)
     @Schema(description = "字段后缀")
+    @TableField(typeHandler = JacksonTypeHandler.class)
     private Set<String> fieldSuffix = new HashSet<>();
 
     @Schema(description = "mock条数")

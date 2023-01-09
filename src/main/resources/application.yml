@@ -3,11 +3,8 @@ server:
 spring:
   application:
     name: maker-generator
-  datasource:
-    driver-class-name: com.p6spy.engine.spy.P6SpyDriver
-    url: jdbc:p6spy:postgresql://db.maker.com:5432/maker
-    username: postgres
-    password: root
+  profiles:
+    active: prod
   web:
     resources:
       static-locations: classpath:/dist

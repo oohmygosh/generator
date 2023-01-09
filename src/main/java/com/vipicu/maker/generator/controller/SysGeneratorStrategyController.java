@@ -1,6 +1,5 @@
 package com.vipicu.maker.generator.controller;
 
-
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.vipicu.maker.generator.config.GeneratorAutoConfig;
