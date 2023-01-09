@@ -36,7 +36,6 @@ public class SysGeneratorTemplateController extends ApiController {
         return sysGeneratorTemplateService.page(dto.page(), dto.getData());
     }
 
-
     @Operation(summary = "查询 id 信息")
     @GetMapping("/get")
     public SysGeneratorTemplate get(@RequestParam Long id) {

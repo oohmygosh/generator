@@ -2,9 +2,9 @@ server:
   port: 8088
 spring:
   application:
-    name: maker-generator
+    name: @project.name@
   profiles:
-    active: prod
+    active: @profiles.active@
   web:
     resources:
       static-locations: classpath:/dist
@@ -17,7 +17,7 @@ springdoc:
   api-docs:
     path: /v3/api-docs
   group-configs:
-    - group: 'default'
+    - group: 'generator'
       paths-to-match: '/**'
       packages-to-scan: com.vipicu.maker.generator.controller
       
